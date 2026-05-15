@@ -276,3 +276,6 @@ Ministry of Welfare (Government Finalization)
 PROCESS COMPLETED ✓
 - Review the README files in each component
 - Open an issue in the repository
+```
+# Demo Videos
+[DIGITAL PATTA] - (https://github.com/vineeth191004/Blockchain-Based-Secure-Land-Registration-System/blob/main/digital_patta.webm)
