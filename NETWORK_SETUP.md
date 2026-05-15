@@ -227,14 +227,6 @@ All organizations participate in consensus with multi-signature policies.
 - Multi-organization endorsement policies
 - Private data collections for sensitive information
 
-## 📞 Support
-
-For issues or questions:
-1. Check the troubleshooting section
-2. Review container logs
-3. Verify environment variables are set correctly
-4. Ensure all prerequisites are installed
-
 ## 🎯 Next Steps
 
 After setup completion:
