@@ -1,0 +1,12 @@
+node_modules/
+kubo/
+fabric-samples/bin/
+fabric-samples/test-network/fabric-samples/
+fabric-samples/test-network/organizations/
+
+.next/
+dist/
+build/
+
+*.log
+.env

@@ -1,0 +1,60 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: example.com
+    EnableNodeOUs: true
+    Specs:
+      # Machine A — hosts orderer + Org1 peer
+      - Hostname: orderer
+        SANS:
+          - localhost
+          - orderer.example.com
+          - IP_MACHINE_A          # Replace with actual IP of Machine A
+      # Machine B — hosts orderer2 + Org2 peer
+      - Hostname: orderer2
+        SANS:
+          - localhost
+          - orderer2.example.com
+          - IP_MACHINE_B          # Replace with actual IP of Machine B
+      # Machine C — hosts orderer3 + Org3 peer
+      - Hostname: orderer3
+        SANS:
+          - localhost
+          - orderer3.example.com
+          - IP_MACHINE_C          # Replace with actual IP of Machine C
+
+PeerOrgs:
+  - Name: Org1
+    Domain: org1.example.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+      SANS:
+        - localhost
+        - peer0.org1.example.com
+        - peer1.org1.example.com
+    Users:
+      Count: 1
+
+  - Name: Org2
+    Domain: org2.example.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+      SANS:
+        - localhost
+        - peer0.org2.example.com
+        - peer1.org2.example.com
+    Users:
+      Count: 1
+
+  - Name: Org3
+    Domain: org3.example.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+      SANS:
+        - localhost
+        - peer0.org3.example.com
+        - peer1.org3.example.com
+    Users:
+      Count: 1

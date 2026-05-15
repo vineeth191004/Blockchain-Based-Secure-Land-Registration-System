@@ -1,0 +1,28 @@
+127.0.0.1 localhost
+127.0.1.1 vineethG
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+172.20.252.166 orderer.example.com
+172.20.252.166 peer0.org1.example.com
+
+172.20.252.166 ca_orderer
+172.20.236.91 peer0.org2.example.com
+
+172.20.231.51 peer0.org3.example.com
+
+172.20.252.166 orderer.example.com
+172.20.252.166 peer0.org1.example.com
+
+172.20.236.91 peer0.org2.example.com
+
+172.20.231.51 peer0.org3.example.com
+
+172.20.252.166  peer0.org1.example.com
+172.20.236.91   peer0.org2.example.com
+172.20.226.50   peer0.org3.example.com
+172.20.234.80  orderer.example.com
