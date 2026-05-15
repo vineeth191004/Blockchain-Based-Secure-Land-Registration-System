@@ -1,267 +1,117 @@
-# Land Registration System - Blockchain Integration
+# Blockchain-Based Secure Land Registration System
 
-This project implements a complete Hyperledger Fabric blockchain solution for land registration with a 3-organization network architecture.
+This project implements a complete Hyperledger Fabric blockchain solution for land registration with a 3-organization network architecture, integrated with an AI/OCR pipeline and a MongoDB backend.
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Automated)
 
-### Automated Setup (Recommended)
+The easiest way to start the entire system is to use the master run script. This script will automatically set up the Fabric network, start the AI microservice, seed the database, and launch both the backend API and the frontend application.
+
 ```bash
-# Complete network setup in one command
-./setup-network.sh
-
-# Test the setup
-./test-network.sh
+# Run the master setup script
+./run-all.sh
 ```
 
-### Manual Setup
-See [NETWORK_SETUP.md](NETWORK_SETUP.md) for detailed manual setup instructions.
+### Accessing the System
+- **User Portal**: [http://localhost:3000/userlogin](http://localhost:3000/userlogin)
+- **Official Dashboard**: [http://localhost:3000/officiallogin](http://localhost:3000/officiallogin)
+
+---
+
+## 🛠 Prerequisites
+
+Ensure you have the following installed before running the system:
+- **Docker & Docker Compose**
+- **Node.js (v16+) & npm**
+- **Python 3.8+ & pip**
+- **MongoDB** (Running locally or connection string updated in `client/.env`)
+
+---
+
+## 🏗 Manual Setup Instructions
+
+If you prefer to start components individually or need to troubleshoot, follow these steps in order:
+
+### 1. Start the Blockchain Network
+```bash
+./setup-network.sh
+```
+This script automates:
+- Generation of crypto materials and channel artifacts.
+- Starting the Fabric network.
+- Channel creation and joining for all three organizations.
+- Chaincode installation and deployment.
+- Admin user enrollment.
+
+### 2. Start the AI & OCR Microservice
+This service is required for document verification and processing.
+```bash
+cd ai_service
+pip install fastapi uvicorn pydantic
+python3 main.py
+```
+
+### 3. Seed the MongoDB Database
+Seeds the necessary roles and user collections in MongoDB.
+```bash
+cd client
+npm install
+node scripts/seed.js
+```
+
+### 4. Start the Fabric API Server
+The Express server acts as a bridge between the frontend and the Fabric network.
+```bash
+cd fabric-api
+npm install
+npm start
+```
+*The API server will run on port 3001.*
+
+### 5. Start the Frontend Application
+The Next.js client interface for users and officials.
+```bash
+cd client
+npm install
+npm run dev
+```
+*The frontend will be accessible at port 3000.*
+
+---
+
+## 🛑 Stopping the System
+
+To gracefully stop the background processes (if started via `run-all.sh`) and bring down the network:
+
+```bash
+# 1. Stop background processes (find the PIDs outputted by run-all.sh)
+kill <API_PID> <FRONTEND_PID> <AI_SERVICE_PID>
+
+# 2. Bring down the Fabric network and clean up containers/volumes
+cd fabric-samples/test-network
+./network.sh down
+```
+
+---
 
 ## 🏢 Network Architecture
 
 ### Organizations
-- **Org1 (Registration)**: Handles initial land application registration and user management
-- **Org2 (Revenue)**: Manages revenue department verification, survey reports, and land valuation
-- **Org3 (Collectorate)**: Provides final approval authority and oversees the complete registration process
+- **Org1 (Registration)**: Handles initial land application registration and user management.
+- **Org2 (Revenue)**: Manages revenue department verification, survey reports, and land valuation.
+- **Org3 (Collectorate)**: Provides final approval authority and oversees the complete registration process.
 
-### Setup Scripts
-- `setOrg1.sh` - Environment setup for Registration Department
-- `setOrg2.sh` - Environment setup for Revenue Department
-- `setOrg3.sh` - Environment setup for Collectorate Department
-- `setup-network.sh` - Complete automated network setup
-- `test-network.sh` - Network verification and testing
+### User Roles
+- **User**: Can submit applications, track status, and complete OTP-based terminal registration.
+- **Clerk**: Can view and update applications.
+- **Superintendent**: Can verify applications.
+- **Revenue Inspector**: Can conduct surveys.
+- **MRO**: Can approve revenue-related actions.
+- **District Collector**: Final approval authority.
 
-### Components
+---
 
-#### 1. Frontend (Next.js)
-- User registration and authentication
-- Official dashboards with role-based access
-- Land application submission and tracking
-- Document upload and viewing
-- Location: `client/`
-
-#### 2. Backend API (Express.js)
-- REST API server for blockchain integration
-- JWT authentication with role-based access control
-- Land application management
-- User enrollment and certificate management
-- Location: `fabric-api/`
-
-#### 3. Chaincode (Node.js)
-- Smart contracts for land registration workflow
-- Multi-step approval process
-- Immutable audit trail
-- Location: `chaincode/land-registration/`
-
-#### 4. Network Configuration
-- Docker-based Fabric network
-- 3-organization setup with CAs, peers, and orderer
-- Automated deployment scripts
-- Location: `fabric-samples/test-network/`
-
-## Quick Start
-
-### Prerequisites
-- Docker and Docker Compose
-- Node.js 16+
-- npm or yarn
-
-### 1. Start the Blockchain Network
-```bash
-cd fabric-samples/test-network
-./start-network.sh
-```
-
-### 2. Deploy Chaincode
-```bash
-./deploy-chaincode.sh
-```
-
-### 3. Start the API Server
-```bash
-cd ../../fabric-api
-npm install
-npm start
-```
-
-### 4. Start the Frontend
-```bash
-cd ../client
-npm install
-npm run dev
-```
-
-## Workflow
-
-1. **User Registration**: Citizens register through the web interface
-2. **Application Submission**: Users submit land registration applications with documents
-3. **Revenue Verification**: Revenue officials verify documents and conduct surveys
-4. **Collector Approval**: Collector officials provide final approval
-5. **Registration Complete**: Land registration is recorded on blockchain
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/login` - User login
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/logout` - User logout
-
-### Land Applications
-- `POST /api/land/create` - Create new application
-- `GET /api/land/:id` - Get application details
-- `GET /api/land` - Get all applications (role-based)
-- `PUT /api/land/:id/verify` - Revenue verification
-- `PUT /api/land/:id/survey` - Survey report update
-- `PUT /api/land/:id/approve` - Collector approval
-
-## Chaincode Functions
-
-- `createApplication(applicationData)` - Create land application
-- `verifyByRevenue(applicationId, verificationData)` - Revenue verification
-- `surveyReportUpdate(applicationId, surveyData)` - Survey update
-- `approveByCollector(applicationId, approvalData)` - Final approval
-- `getApplication(applicationId)` - Get application
-- `getAllLandRequest()` - Get all applications
-- `getHistory(applicationId)` - Get application history
-- `queryByStatus(status)` - Query by status
-
-## User Roles
-
-- **User**: Can submit and track applications
-- **Clerk**: Can view and update applications
-- **Superintendent**: Can verify applications
-- **Revenue Inspector**: Can conduct surveys
-- **MRO**: Can approve revenue-related actions
-- **District Collector**: Can provide final approval
-
-## Security Features
-
-- **TLS Encryption**: All network communications encrypted
-- **Certificate-based Authentication**: X.509 certificates for identity
-- **Role-based Access Control**: Fine-grained permissions
-- **Immutable Audit Trail**: All actions recorded on blockchain
-- **Multi-organization Consensus**: Requires approval from multiple parties
-
-## Development
-
-### Project Structure
-```
-esb/
-├── client/                 # Next.js frontend
-├── fabric-api/            # Express.js API server
-├── chaincode/             # Smart contracts
-│   └── land-registration/
-└── fabric-samples/        # Network configuration
-    └── test-network/
-```
-
-### Environment Setup
-
-1. **Clone and setup:**
-   ```bash
-   git clone <repository>
-   cd esb
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   # Frontend
-   cd client && npm install
-
-   # API Server
-   cd ../fabric-api && npm install
-
-   # Chaincode
-   cd ../chaincode/land-registration && npm install
-   ```
-
-3. **Start development environment:**
-   ```bash
-   # Terminal 1: Blockchain network
-   cd fabric-samples/test-network
-   ./start-network.sh
-
-   # Terminal 2: API server
-   cd ../../fabric-api
-   npm run dev
-
-   # Terminal 3: Frontend
-   cd ../client
-   npm run dev
-   ```
-
-## Testing
-
-### Unit Tests
-```bash
-# API tests
-cd fabric-api
-npm test
-
-# Chaincode tests
-cd ../chaincode/land-registration
-npm test
-```
-
-### Integration Tests
-```bash
-# End-to-end workflow tests
-cd fabric-api
-npm run test:e2e
-```
-
-## Deployment
-
-### Production Setup
-1. Configure production Docker registry
-2. Update connection profiles with production endpoints
-3. Deploy network to Kubernetes or cloud
-4. Configure load balancers and monitoring
-5. Set up backup and disaster recovery
-
-### Monitoring
-- Container health checks
-- Blockchain network monitoring
-- API performance metrics
-- Audit log analysis
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Network won't start**: Check Docker resources and ports
-2. **Chaincode deployment fails**: Verify network is running
-3. **API connection errors**: Check connection profiles
-4. **Certificate issues**: Regenerate crypto material
-
-### Logs
-```bash
-# Network logs
-cd fabric-samples/test-network
-docker-compose -f docker/docker-compose-full.yaml logs -f
-
-# API logs
-cd ../../fabric-api
-npm run logs
-
-# Frontend logs
-cd ../client
-npm run build  # Check for build errors
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create feature branch
-3. Make changes with tests
-4. Submit pull request
-
-## License
-
-This project is licensed under the Apache 2.0 License.
-
-## Support
-
-For support and questions:
-- Check the troubleshooting section
-- Review the README files in each component
-- Open an issue in the repository
+## 🌟 Key Features
+- **OTP Terminal Registration**: Secure user onboarding via OTP entered directly in the terminal (`otp.txt`).
+- **AI/OCR Pipeline**: Automated document verification using PaddleOCR and LayoutLMv3.
+- **Role-Based Workflows**: Strictly enforced access control across multiple government departments.
+- **Immutable Ledger**: All actions, approvals, and land records are secured on the Hyperledger Fabric blockchain.
