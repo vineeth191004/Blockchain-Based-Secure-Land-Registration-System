@@ -279,3 +279,4 @@ PROCESS COMPLETED ✓
 ```
 # Demo Videos
 [DIGITAL PATTA] - (https://github.com/vineeth191004/Blockchain-Based-Secure-Land-Registration-System/blob/main/digital_patta.webm)
+[OFFICIALS LOGIN AND USER REGISTRATION] - (https://github.com/vineeth191004/Blockchain-Based-Secure-Land-Registration-System/blob/main/Screencast%20from%202026-05-14%2017-03-38.webm), (https://github.com/vineeth191004/Blockchain-Based-Secure-Land-Registration-System/blob/main/officials_approving.webm)
