@@ -224,15 +224,6 @@ npm run test:e2e
 - API performance metrics
 - Audit log analysis
 
-## Troubleshooting
-
-### Common Issues
-
-1. **Network won't start**: Check Docker resources and ports
-2. **Chaincode deployment fails**: Verify network is running
-3. **API connection errors**: Check connection profiles
-4. **Certificate issues**: Regenerate crypto material
-
 ### Logs
 ```bash
 # Network logs
@@ -248,20 +239,40 @@ cd ../client
 npm run build  # Check for build errors
 ```
 
-## Contributing
+## 🎯 Overview
 
-1. Fork the repository
-2. Create feature branch
-3. Make changes with tests
-4. Submit pull request
+Complete role-based dashboard system with 11-stage workflow for land record processing across 3 organizations:
+- **Org 1**: Registration Department (Clerk → Superintendent → Project Officer)
+- **Org 2**: Revenue Department (VRO → Surveyor → Revenue Inspector → MRO → Revenue Dept Officer)
+- **Org 3**: Collectorate (Joint Collector → District Collector → Ministry of Welfare)
 
-## License
+## 📊 Workflow Stages
 
-This project is licensed under the Apache 2.0 License.
-
-## Support
-
-For support and questions:
-- Check the troubleshooting section
+```
+USER SUBMITS LAND APPLICATION
+           ↓
+Clerk (Create Record)
+           ↓
+Superintendent (Verify Docs)
+           ↓
+Project Officer (Approve Registration)
+           ↓
+VRO (Field Verification)
+           ↓
+Surveyor (Measurements & Maps)
+           ↓
+Revenue Inspector (Tax Status Check)
+           ↓
+MRO (Revenue Approval)
+           ↓
+Revenue Dept Officer (Final Revenue Approval)
+           ↓
+Joint Collector (Review & Approve)
+           ↓
+District Collector (Final District Approval)
+           ↓
+Ministry of Welfare (Government Finalization)
+           ↓
+PROCESS COMPLETED ✓
 - Review the README files in each component
 - Open an issue in the repository
